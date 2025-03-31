@@ -3,7 +3,7 @@ export interface Message {
   userName: string;
   content: string;
   timestamp: Date;
-  createdAt?: Date;
+  createdAt: Date;
 }
 
 export interface Room {

@@ -7,7 +7,7 @@ interface MessageInputProps {
   onSend: () => void;
 }
 
-export function MessageInput({
+export default function MessageInput({
   value,
   onChangeText,
   onSend,

@@ -7,7 +7,11 @@ interface RoomItemProps {
   onPress: () => void;
 }
 
-export function RoomItem({ name, participantsCount, onPress }: RoomItemProps) {
+export default function RoomItem({
+  name,
+  participantsCount,
+  onPress,
+}: RoomItemProps) {
   return (
     <TouchableOpacity
       className='p-4 border-b border-gray-200'

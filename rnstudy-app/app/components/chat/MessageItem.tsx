@@ -8,7 +8,7 @@ interface MessageItemProps {
   isMyMessage: boolean;
 }
 
-export function MessageItem({
+export default function MessageItem({
   content,
   userName,
   timestamp,

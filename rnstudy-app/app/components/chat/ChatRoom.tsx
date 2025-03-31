@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { MessageItem } from './MessageItem';
-import { MessageInput } from './MessageInput';
-import { Message, Room } from '@/app/types/chat';
+import MessageItem from './MessageItem';
+import MessageInput from './MessageInput';
+import { Message, Room } from '@/app/types/chat.d';
 
 interface ChatRoomProps {
   room: Room;
@@ -14,7 +14,7 @@ interface ChatRoomProps {
   onBack: () => void;
 }
 
-export function ChatRoom({
+export default function ChatRoom({
   room,
   messages,
   userId,

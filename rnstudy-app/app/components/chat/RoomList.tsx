@@ -8,8 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { RoomItem } from './RoomItem';
-import { Room } from '@/app/types/chat';
+import RoomItem from './RoomItem';
+import { Room } from '@/app/types/chat.d';
 
 interface RoomListProps {
   rooms: Room[];
@@ -19,7 +19,7 @@ interface RoomListProps {
   onJoinRoom: (roomId: string) => void;
 }
 
-export function RoomList({
+export default function RoomList({
   rooms,
   newRoomName,
   onChangeRoomName,
