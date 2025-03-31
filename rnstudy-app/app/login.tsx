@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/store/useAuthStore';
-import { api } from '../src/api/axios';
+import { api } from '../api/axios';
 import * as SecureStore from 'expo-secure-store';
 
 export default function LocalLogin(): JSX.Element {
@@ -12,7 +12,8 @@ export default function LocalLogin(): JSX.Element {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
-  const { isLoggedIn, login, logout, checkLoginStatus } = useAuthStore();
+  const { isLoggedIn, login, register, logout, checkLoginStatus } =
+    useAuthStore();
 
   useEffect(() => {
     checkLoginStatus();
@@ -20,17 +21,19 @@ export default function LocalLogin(): JSX.Element {
 
   const handleLogin = async () => {
     try {
-      console.log('로그인 시도:', { email, password });
       const response = await api.post('/auth/login', { email, password });
-      console.log('로그인 응답:', response.data);
-      if (response.data.accessToken) {
-        await SecureStore.setItemAsync('token', response.data.accessToken);
-        await login(response.data.user);
+      const { accessToken, refreshToken, user } = response.data;
+
+      if (accessToken && refreshToken && user) {
+        await Promise.all([
+          SecureStore.setItemAsync('accessToken', accessToken),
+          SecureStore.setItemAsync('refreshToken', refreshToken),
+        ]);
+        await login(user);
         Alert.alert('로그인 성공', '환영합니다!');
         router.replace('/(tabs)');
       }
     } catch (error: any) {
-      console.error('로그인 에러:', error.response?.data || error.message);
       Alert.alert(
         '로그인 실패',
         error.response?.data?.message ||
@@ -47,9 +50,13 @@ export default function LocalLogin(): JSX.Element {
         name,
       });
 
-      if (response.data.accessToken) {
-        await SecureStore.setItemAsync('token', response.data.accessToken);
-        await login(response.data.user);
+      const { accessToken, refreshToken, user } = response.data;
+      if (accessToken && refreshToken && user) {
+        await Promise.all([
+          SecureStore.setItemAsync('accessToken', accessToken),
+          SecureStore.setItemAsync('refreshToken', refreshToken),
+        ]);
+        await register(user);
         Alert.alert('회원가입 성공', '환영합니다!');
         router.replace('/(tabs)');
       }
@@ -62,10 +69,13 @@ export default function LocalLogin(): JSX.Element {
   };
 
   const handleLogout = async () => {
-    await logout();
-    await SecureStore.deleteItemAsync('token');
-    Alert.alert('로그아웃', '로그아웃되었습니다.');
-    router.replace('/(tabs)');
+    try {
+      await logout();
+      Alert.alert('로그아웃', '로그아웃되었습니다.');
+      router.replace('/login');
+    } catch (error) {
+      Alert.alert('로그아웃 실패', '로그아웃 중 오류가 발생했습니다.');
+    }
   };
 
   return (
