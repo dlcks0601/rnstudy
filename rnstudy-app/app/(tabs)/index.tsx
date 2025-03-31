@@ -16,9 +16,13 @@ export default function HomeScreen() {
     }
   };
 
+  const handleTeamSelect = () => {
+    router.push('/TeamSelect');
+  };
+
   return (
     <SafeAreaView className='flex-1 bg-white'>
-      <View className='flex-1 items-center justify-center'>
+      <View className='flex-1 items-center justify-center gap-4'>
         <Text className='text-2xl font-bold mb-5'>
           {isLoggedIn ? `${user?.name}님 환영합니다!` : '로그인이 필요합니다'}
         </Text>
@@ -30,6 +34,16 @@ export default function HomeScreen() {
             {isLoggedIn ? '로그아웃' : '로그인'}
           </Text>
         </TouchableOpacity>
+        {isLoggedIn && (
+          <TouchableOpacity
+            className='bg-blue-500 px-6 py-3 rounded-xl'
+            onPress={handleTeamSelect}
+          >
+            <Text className='text-white text-base font-semibold'>
+              팀 선택하기
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </SafeAreaView>
   );
