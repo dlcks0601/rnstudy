@@ -38,9 +38,10 @@ export default function RootLayout() {
     if (isLoading || !loaded) return;
 
     const inAuthGroup = segments[0] === '(auth)';
+    const inTeamSelect = segments[0] === 'TeamSelect';
 
     if (!isLoggedIn && !inAuthGroup) {
-      router.replace('/login');
+      router.replace('/(auth)/login');
     } else if (isLoggedIn && inAuthGroup) {
       router.replace('/(tabs)');
     }
@@ -53,8 +54,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name='login' />
+        <Stack.Screen name='(auth)' />
         <Stack.Screen name='(tabs)' />
+        <Stack.Screen name='TeamSelect' />
       </Stack>
     </SafeAreaProvider>
   );
