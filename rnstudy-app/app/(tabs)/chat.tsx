@@ -5,8 +5,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Message, Room } from '../types/chat';
-import { RoomList } from '../components/chat/RoomList';
-import { ChatRoom } from '../components/chat/ChatRoom';
+import RoomList from '../components/chat/RoomList';
+import ChatRoom from '../components/chat/ChatRoom';
 
 export default function ChatScreen() {
   const router = useRouter();
